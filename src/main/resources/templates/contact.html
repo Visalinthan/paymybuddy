@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Registration and Login App</title>
+
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+</head>
+<body>
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed"
+              data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+              aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span> <span
+              class="icon-bar"></span> <span class="icon-bar"></span> <span
+              class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
+      <a class="navbar-brand" href="#" th:href="@{/}">Transfert</a>
+      <a class="navbar-brand" href="#" th:href="@{/}">Profile</a>
+      <a class="navbar-brand" href="/" th:href="@{/contact}">Contact</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Log off</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<br>
+<br>
+
+<div class="container">
+
+  <!-- success message -->
+  <div th:if="${param.success}">
+    <div class="alert alert-info">Contact added !</div>
+  </div>
+
+  <!-- error message -->
+  <div th:if="${param.error}">
+    <div class="alert alert-danger">Contact not existed !</div>
+  </div>
+
+  <h1> Mes Contacts </h1>
+  <form th:action="@{/contact}" method="post" th:object="${contact}">
+
+    <div class="form-group">
+      <label class="control-label" for="email"> Email </label>
+      <input id="email" class="form-control" th:field="*{email}" required autofocus="autofocus" />
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">Add Contact</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

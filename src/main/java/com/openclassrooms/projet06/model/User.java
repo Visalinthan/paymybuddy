@@ -1,7 +1,5 @@
 package com.openclassrooms.projet06.model;
 
-import com.openclassrooms.projet06.model.Role;
-
 import javax.persistence.*;
 import java.util.Collection;
 
