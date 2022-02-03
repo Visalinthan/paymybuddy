@@ -1,7 +1,9 @@
 package com.openclassrooms.projet06.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -20,6 +22,10 @@ public class User {
     private String email;
 
     private String password;
+
+    @ManyToMany
+    private List<User> contact = new ArrayList<>();
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

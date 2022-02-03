@@ -14,7 +14,7 @@ public class Contact extends User{
     private Long id;
 
     @ManyToMany
-    private List<User> users = new ArrayList<>();
+    private final List<User> contact = new ArrayList<>();
 
     public Contact() {
 
@@ -31,11 +31,11 @@ public class Contact extends User{
     }
 
     public List<User> getUsers() {
-        return users;
+        return contact;
     }
 
     public void addUsers(User user) {
-        this.users.add(user);
+        this.contact.add(user);
     }
 
 }

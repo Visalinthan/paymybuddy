@@ -3,19 +3,21 @@ package com.openclassrooms.projet06.web;
 import com.openclassrooms.projet06.dto.AddContactDto;
 import com.openclassrooms.projet06.model.User;
 import com.openclassrooms.projet06.service.ContactService;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.openclassrooms.projet06.service.AuthenticationFacadeImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
 
 @Controller
 @RequestMapping("/contact")
-public class ContactController {
+public class ContactController{
 
     private final ContactService contactService;
-    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthenticationFacadeImpl authenticationFacade;
 
     public ContactController(ContactService contactService) {
         super();
@@ -32,17 +34,22 @@ public class ContactController {
         return new AddContactDto();
     }
 
+    @RequestMapping(value = "/username", method = RequestMethod.GET)
+    @ResponseBody
+    public String currentUserName() {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        return authentication.getName();
+    }
+
     @PostMapping
     public String addContact(@ModelAttribute("contact") AddContactDto addContactDto) {
         User contact = contactService.checkUserExist(addContactDto.getEmail());
-        //User user = contactService.checkUserExist(addContactDto.getUserConnected());
-        //System.out.println(user.getFirstName());
+        User user = contactService.checkUserExist(currentUserName());
         if (contact.getEmail() != null){
-            //contactService.save(user,contact);
+            contactService.save(user,contact);
             return "redirect:/contact?success";
         }else {
             return "redirect:/contact?error";
         }
-
     }
 }
