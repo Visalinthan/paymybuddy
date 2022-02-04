@@ -3,6 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
   <meta charset="ISO-8859-1">
+  <meta charset="UTF-8">
   <title>Registration and Login App</title>
 
   <link rel="stylesheet"
@@ -41,16 +42,6 @@
 
 <div class="container">
 
-  <!-- success message -->
-  <div th:if="${param.success}">
-    <div class="alert alert-info">Contact added !</div>
-  </div>
-
-  <!-- error message -->
-  <div th:if="${param.error}">
-    <div class="alert alert-danger">Contact not existed !</div>
-  </div>
-
   <h1> Mes Contacts </h1>
   <form th:action="@{/contact}" method="post" th:object="${contact}">
 
@@ -63,6 +54,40 @@
       <button type="submit" class="btn btn-success">Add Contact</button>
     </div>
   </form>
+
+  <!-- success message -->
+  <div th:if="${param.success}">
+    <div class="alert alert-info">Contact added !</div>
+  </div>
+
+  <!-- error message -->
+  <div th:if="${param.error}">
+    <div class="alert alert-danger">Contact not existed !</div>
+  </div>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Prenom</th>
+      <th scope="col">Mail</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+      <td>
+        <button type="submit" class="btn btn-success">Virement</button>
+        <button type="submit" class="btn btn-info">Modifier</button>
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
 </div>
 </body>
 </html>

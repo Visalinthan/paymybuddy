@@ -24,8 +24,18 @@ public class User {
     private String password;
 
     @ManyToMany
-    private List<User> contact = new ArrayList<>();
+    @JoinTable(name="user_contact",
+            joinColumns=@JoinColumn(name="user2"),
+            inverseJoinColumns=@JoinColumn(name="user1")
+    )
+    private List<User> contact;
 
+    @ManyToMany
+    @JoinTable(name="user_contact",
+            joinColumns=@JoinColumn(name="user1"),
+            inverseJoinColumns=@JoinColumn(name="user2")
+    )
+    private List<User> contactOf;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -84,5 +94,21 @@ public class User {
     }
     public void setRoles(Collection < Role > roles) {
         this.roles = roles;
+    }
+
+    public List<User> getUsers() {
+        return contact;
+    }
+
+    public List<User> getContact() {
+        return contactOf;
+    }
+
+    public void addUsers(User user) {
+        this.contact.add(user);
+    }
+
+    public void addContacts(User user) {
+        this.contactOf.add(user);
     }
 }
