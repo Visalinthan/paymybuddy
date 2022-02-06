@@ -10,14 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -38,12 +37,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        User user = userRepository.findByEmail(username);
-        if (user == null) {
+        Optional<User> user = userRepository.findByEmail(username);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+
+        return new org.springframework.security.core.userdetails.User(user
+                .get().getEmail(), user.get().getPassword(), mapRolesToAuthorities(user.get().getRoles()));
     }
 
     private Collection <? extends GrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
@@ -51,24 +51,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User AddContact(String userConnected, String addContact){
-        User user = userRepository.findByEmail(userConnected);
-        User contact = userRepository.findByEmail(addContact);
-        user.addUsers(user);
-        user.addContacts(contact);
-        return userRepository.save(user);
+    public User addContact(String userConnected, String addContact){
+        Optional<User> user = userRepository.findByEmail(userConnected);
+        User contact = userRepository.findByEmail(addContact).orElse(null);
+
+        user.ifPresent(u -> u.addContacts(contact));
+
+        return user.map(userRepository::save).orElse(null);
     }
 
     @Override
-    public List<User> getContact(User user){
-        List<Long> usersId = userRepository.findContactOfUser(user.getId());
-        List<User> users = new ArrayList<>();
-        for (Long id : usersId){
-            users.add(userRepository.getById(id));
-        }
-        return users;
+    public List<User> getContacts(String email){
+      return  userRepository.findByEmail(email).map(u -> u.getContact()).orElse(Collections.emptyList());
+
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkIfUserExist(final String email) {
+        return  userRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public boolean checkIfContactExist(String userName, String email) {
+       return userRepository.findByEmail(userName).map(u -> u.getContact().stream().anyMatch(user -> user.getEmail().equals(email))).orElse(false);
+
+    }
 
 
 }

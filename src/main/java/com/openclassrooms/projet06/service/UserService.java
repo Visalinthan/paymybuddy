@@ -12,8 +12,11 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     User save(UserRegistrationDto registrationDto);
 
-    User AddContact(String userConnected, String Contact);
+    User addContact(String userConnected, String Contact);
 
-    List<User> getContact(User user);
+    List<User> getContacts(String email);
 
+    boolean checkIfUserExist(String email);
+
+    boolean checkIfContactExist(String userName, String email);
 }

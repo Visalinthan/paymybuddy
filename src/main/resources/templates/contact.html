@@ -61,8 +61,16 @@
   </div>
 
   <!-- error message -->
+  <div th:if="${param.AlreadyExist}">
+    <div class="alert alert-danger">Le contact a dèja été ajoutée!</div>
+  </div>
+
+  <div th:if="${param.NotExist}">
+    <div class="alert alert-danger">Le contact n'existe pas</div>
+  </div>
+
   <div th:if="${param.error}">
-    <div class="alert alert-danger">Contact not existed !</div>
+    <div class="alert alert-danger">Une erreur s'est produite</div>
   </div>
 
   <table class="table">
@@ -75,10 +83,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+    <tr th:each="contact : ${contacts}">
+
+      <td th:text="${contact.lastName}"></td>
+      <td th:text="${contact.firstName}"></td>
+      <td th:text="${contact.email}"></td>
+
       <td>
         <button type="submit" class="btn btn-success">Virement</button>
         <button type="submit" class="btn btn-info">Modifier</button>

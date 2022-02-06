@@ -23,19 +23,22 @@ public class User {
 
     private String password;
 
-    @ManyToMany
-    @JoinTable(name="user_contact",
-            joinColumns=@JoinColumn(name="user2"),
-            inverseJoinColumns=@JoinColumn(name="user1")
-    )
-    private List<User> contact;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Account> accounts;
 
     @ManyToMany
     @JoinTable(name="user_contact",
-            joinColumns=@JoinColumn(name="user1"),
-            inverseJoinColumns=@JoinColumn(name="user2")
+            joinColumns=@JoinColumn(name="contact_id"),
+            inverseJoinColumns=@JoinColumn(name="user_id")
     )
-    private List<User> contactOf;
+    private List<User> user;
+
+    @ManyToMany
+    @JoinTable(name="user_contact",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="contact_id")
+    )
+    private List<User> contact;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -97,18 +100,38 @@ public class User {
     }
 
     public List<User> getUsers() {
-        return contact;
+        return user;
     }
 
     public List<User> getContact() {
-        return contactOf;
+        return contact;
     }
 
     public void addUsers(User user) {
-        this.contact.add(user);
+        this.user.add(user);
     }
 
     public void addContacts(User user) {
-        this.contactOf.add(user);
+        this.contact.add(user);
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public List<User> getUser() {
+        return user;
+    }
+
+    public void setUser(List<User> user) {
+        this.user = user;
+    }
+
+    public void setContact(List<User> contact) {
+        this.contact = contact;
     }
 }
