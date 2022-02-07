@@ -1,14 +1,14 @@
 package com.openclassrooms.projet06.web;
 
 import com.openclassrooms.projet06.dto.AddBalanceDto;
+import com.openclassrooms.projet06.model.Account;
 import com.openclassrooms.projet06.service.AccountService;
 import com.openclassrooms.projet06.service.AuthenticationFacadeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
@@ -32,18 +32,27 @@ public class MainController {
         return new AddBalanceDto();
     }
 
+    @RequestMapping(value = "/username", method = RequestMethod.GET)
+    @ResponseBody
+    public String currentUserName() {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        return authentication.getName();
+    }
+
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        Account account = accountService.getAccount(currentUserName());
+        model.addAttribute("account", account);
         return "index";
     }
 
-    @PostMapping
+    @PostMapping("/addMoney")
     public String addMoney(@ModelAttribute("amount") AddBalanceDto addBalanceDto) {
-       /* if (addBalanceDto.getAmount()>0) {
-            return "redirect:/index?error";
-        }*/
         Authentication authentication = authenticationFacade.getAuthentication();
+        if (addBalanceDto.getAmount()<=0) {
+            return "redirect:/?error";
+        }
         this.accountService.setAmount(authentication.getName(),addBalanceDto.getAmount());
-        return "redirect:/index?success";
+        return "redirect:/?success";
     }
 }

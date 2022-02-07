@@ -43,8 +43,10 @@
 <div class="container">
     <h1> Mon compte </h1>
 
-    <p>Solde actuel : </p>
-    <form th:action="@{/index}" method="post" th:object="${account}">
+    <h2>Solde actuel : </h2>
+    <h3 th:text="${account.amount}"></h3>
+
+    <form th:action="@{/addMoney}" method="post" th:object="${account}">
 
         <div class="form-group">
             <label class="control-label" for="amount"> Amount </label>
@@ -59,6 +61,11 @@
     <!-- success message -->
     <div th:if="${param.success}">
         <div class="alert alert-info">Balance added !</div>
+    </div>
+
+    <!-- error message -->
+    <div th:if="${param.error}">
+        <div class="alert alert-danger">Invalid amount !</div>
     </div>
 
 </div>

@@ -20,10 +20,11 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private AccountService accountService;
 
-
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, AccountService accountService) {
         this.userRepository = userRepository;
+        this.accountService = accountService;
     }
 
     @Override
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
                 new BCryptPasswordEncoder().encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+        this.accountService.saveAccount(user);
 
         return userRepository.save(user);
     }
@@ -63,7 +65,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getContacts(String email){
       return  userRepository.findByEmail(email).map(u -> u.getContact()).orElse(Collections.emptyList());
-
     }
 
     @Override

@@ -11,9 +11,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bankName;
-
-    private double solde;
+    private double amount;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -33,20 +31,12 @@ public class Account {
         this.id = id;
     }
 
-    public String getBankName() {
-        return bankName;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public double getSolde() {
-        return solde;
-    }
-
-    public void setSolde(double solde) {
-        this.solde = solde;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public void setUser(User user) {

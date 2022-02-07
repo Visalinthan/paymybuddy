@@ -12,4 +12,5 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Query("SELECT a FROM Account a WHERE a.user.email = :email")
     Account findAccountByUserEmail(String email);
+
 }
