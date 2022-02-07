@@ -41,9 +41,26 @@
 <br>
 
 <div class="container">
-    <h1>Registration and Login with Spring Boot, Spring Security,
-        Thymeleaf, Hibernate and MySQL</h1>
-    Welcome <span sec:authentication="principal.username"> </span>
+    <h1> Mon compte </h1>
+
+    <p>Solde actuel : </p>
+    <form th:action="@{/index}" method="post" th:object="${account}">
+
+        <div class="form-group">
+            <label class="control-label" for="amount"> Amount </label>
+            <input id="amount" class="form-control" type="number" th:field="*{amount}" required autofocus="autofocus" />
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Add Money</button>
+        </div>
+    </form>
+
+    <!-- success message -->
+    <div th:if="${param.success}">
+        <div class="alert alert-info">Balance added !</div>
+    </div>
+
 </div>
 </body>
 </html>

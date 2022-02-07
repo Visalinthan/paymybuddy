@@ -18,10 +18,10 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+/*
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<Operation> operations;
-
+*/
     public Account() {
     }
 

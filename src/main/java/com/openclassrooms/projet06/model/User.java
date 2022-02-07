@@ -23,8 +23,8 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Account> accounts;
+    /*@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Account> accounts;*/
 
     @ManyToMany
     @JoinTable(name="user_contact",
@@ -114,14 +114,14 @@ public class User {
     public void addContacts(User user) {
         this.contact.add(user);
     }
-
+/*
     public List<Account> getAccounts() {
         return accounts;
     }
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
-    }
+    }*/
 
     public List<User> getUser() {
         return user;

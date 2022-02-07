@@ -18,8 +18,12 @@ public class Operation {
     private double montant;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "accountFrom_id")
+    private Account accountFrom;
+
+    @ManyToOne
+    @JoinColumn(name = "accountTo_id")
+    private Account accountTo;
 
     public Operation() {
     }
@@ -56,11 +60,19 @@ public class Operation {
         this.montant = montant;
     }
 
-    public Account getAccount() {
-        return account;
+    public Account getAccountFrom() {
+        return accountFrom;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccountFrom(Account accountFrom) {
+        this.accountFrom = accountFrom;
+    }
+
+    public Account getAccountTo() {
+        return accountTo;
+    }
+
+    public void setAccountTo(Account accountTo) {
+        this.accountTo = accountTo;
     }
 }
