@@ -11,11 +11,9 @@ public class Operation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
-
     private String description;
 
-    private double montant;
+    private double amount;
 
     @ManyToOne
     @JoinColumn(name = "accountFrom_id")
@@ -36,13 +34,6 @@ public class Operation {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getDescription() {
         return description;
@@ -52,12 +43,12 @@ public class Operation {
         this.description = description;
     }
 
-    public double getMontant() {
-        return montant;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setMontant(double montant) {
-        this.montant = montant;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public Account getAccountFrom() {

@@ -45,31 +45,38 @@
 <br>
 
 <div class="container">
-    <h1> Mon compte </h1>
 
-    <h2>Solde actuel : </h2>
-    <h3 th:text="${account.soldes}"></h3>
+    <h1> Send Money </h1>
+    <form th:action="@{/tranfert}" method="post" th:object="${operation}">
 
-    <form th:action="@{/addMoney}" method="post" th:object="${account}">
+
 
         <div class="form-group">
-            <label class="control-label" for="soldes"> Amount </label>
-            <input id="soldes" class="form-control" type="number" th:field="*{soldes}" required autofocus="autofocus" />
+            <label class="control-label" for="contact"> Email </label>
+            <select id="contact" class="form-select form-select-lg mb-3" aria-label=" My Contacts" >
+                <option selected>Select a contact</option>
+                <option th:each="contact : ${contacts}" value="${contact.email}" th:field="*{email}" th:text="${contact.email}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="description"> Description </label> <input
+                id="description" class="form-control" th:field="*{description}"
+                required autofocus="autofocus" />
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-success">Add Money</button>
+            <label class="control-label" for="amount"> Amount </label>
+            <input id="amount" class="form-control" type="number" th:field="*{amount}" required autofocus="autofocus" />
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Pay</button>
         </div>
     </form>
 
     <!-- success message -->
     <div th:if="${param.success}">
-        <div class="alert alert-info">Balance added !</div>
-    </div>
-
-    <!-- error message -->
-    <div th:if="${param.error}">
-        <div class="alert alert-danger">Invalid amount !</div>
+        <div class="alert alert-info">Money send !</div>
     </div>
 
 </div>

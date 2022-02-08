@@ -19,12 +19,11 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
-    public void saveAccount(User user){
+    public Account saveAccount(User user){
         Account account =new Account();
         account.setSoldes(0);
         account.setUser(user);
-
-        this.accountRepository.save(account);
+        return this.accountRepository.save(account);
     }
 
     public Account getAccount(String email){
@@ -33,15 +32,14 @@ public class AccountService {
         return account;
     }
 
-    public void setAmount(String email,double amount){
+    public Account setAmount(String email,double amount){
         Optional<User> user = userRepository.findByEmail(email);
         Account account = this.accountRepository.findAccountByUserId(user.get().getId());
-        if(account != null){
-            double newBalance = account.getSoldes() + amount;
-            account.setSoldes(newBalance);
-            this.accountRepository.save(account);
-        }
+        double newBalance = account.getSoldes() + amount;
+        account.setSoldes(newBalance);
+        return this.accountRepository.save(account);
     }
+
 
 
 }
