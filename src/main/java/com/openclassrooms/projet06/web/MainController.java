@@ -47,12 +47,11 @@ public class MainController {
     }
 
     @PostMapping("/addMoney")
-    public String addMoney(@ModelAttribute("amount") AddBalanceDto addBalanceDto) {
-        Authentication authentication = authenticationFacade.getAuthentication();
-        if (addBalanceDto.getAmount()<=0) {
+    public String addMoney(@ModelAttribute("soldes") AddBalanceDto addBalanceDto) {
+        if (addBalanceDto.getSoldes()<=0) {
             return "redirect:/?error";
         }
-        this.accountService.setAmount(authentication.getName(),addBalanceDto.getAmount());
+        this.accountService.setAmount(currentUserName(),addBalanceDto.getSoldes());
         return "redirect:/?success";
     }
 }

@@ -44,13 +44,13 @@
     <h1> Mon compte </h1>
 
     <h2>Solde actuel : </h2>
-    <h3 th:text="${account.amount}"></h3>
+    <h3 th:text="${account.soldes}"></h3>
 
     <form th:action="@{/addMoney}" method="post" th:object="${account}">
 
         <div class="form-group">
-            <label class="control-label" for="amount"> Amount </label>
-            <input id="amount" class="form-control" type="number" th:field="*{amount}" required autofocus="autofocus" />
+            <label class="control-label" for="soldes"> Amount </label>
+            <input id="soldes" class="form-control" type="number" th:field="*{soldes}" required autofocus="autofocus" />
         </div>
 
         <div class="form-group">

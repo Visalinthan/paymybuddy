@@ -21,7 +21,7 @@ public class AccountService {
 
     public void saveAccount(User user){
         Account account =new Account();
-        account.setAmount(0);
+        account.setSoldes(0);
         account.setUser(user);
 
         this.accountRepository.save(account);
@@ -37,8 +37,8 @@ public class AccountService {
         Optional<User> user = userRepository.findByEmail(email);
         Account account = this.accountRepository.findAccountByUserId(user.get().getId());
         if(account != null){
-            double newBalance = account.getAmount() + amount;
-            account.setAmount(newBalance);
+            double newBalance = account.getSoldes() + amount;
+            account.setSoldes(newBalance);
             this.accountRepository.save(account);
         }
     }

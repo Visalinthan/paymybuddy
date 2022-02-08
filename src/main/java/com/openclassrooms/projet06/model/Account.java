@@ -11,7 +11,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double amount;
+    private double soldes;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -31,12 +31,12 @@ public class Account {
         this.id = id;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getSoldes() {
+        return soldes;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setSoldes(double soldes) {
+        this.soldes = soldes;
     }
 
     public void setUser(User user) {
