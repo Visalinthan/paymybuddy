@@ -48,9 +48,9 @@ public class ContactController{
 
     @PostMapping
     public String addContact(@ModelAttribute("contact") AddContactDto addContactDto) {
-      if (addContactDto.getEmail() == null) {
-          return "redirect:/contact?error";
-      }
+        if (addContactDto.getEmail() == null) {
+            return "redirect:/contact?error";
+        }
 
         if (userService.checkIfContactExist(currentUserName(), addContactDto.getEmail()) ) {
             return "redirect:/contact?AlreadyExist";
@@ -61,7 +61,7 @@ public class ContactController{
         }
         userService.addContact(currentUserName(),addContactDto.getEmail());
 
-      return "redirect:/contact?success";
+        return "redirect:/contact?success";
     }
 
 
