@@ -2,83 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="ISO-8859-1">
     <meta charset="UTF-8">
-    <title>Registration and Login App</title>
+    <title>Transfer</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 
 </head>
 <body>
-<!-- create navigation bar ( header) -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">PayMyBuddy</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/" th:href="@{/transfert}">Transfert</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/}">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/" th:href="@{/contact}">Contact</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/logout}">Log off</a>
-                </li>
-            </ul>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container ">
+
+    <div class="row mt-5 justify-content-md-center">
+        <div class="col-md-auto">
+            <h2 class="p-3"> Send Money </h2>
+            <form class="row p-3 g-3" th:action="@{/transfert}" method="post" th:object="${operation}">
+
+                <div class="col-auto">
+                    <label class="visually-hidden"  for="contact"> Contact </label>
+                    <select id="contact" th:field="*{email}" class="form-select form-select-md mb-3"
+                            aria-label=" My Contacts">
+                        <option value="">Select a contact</option>
+                        <option th:each="contact : ${contacts}" th:value="${contact.email}" th:field="*{email}"
+                                th:text="${contact.firstName}"></option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label class="visually-hidden"  for="description"> Description </label> <input
+                        id="description" class="form-control" th:field="*{description}"
+                        required autofocus="autofocus"/>
+                </div>
+
+                <div class="col-auto">
+                    <label class="visually-hidden"  for="amount"> Amount </label>
+                    <input id="amount" class="form-control" type="number" th:field="*{amount}" required
+                           autofocus="autofocus"/>
+                </div>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success mb-3">Pay</button>
+                </div>
+            </form>
+
+            <!-- success message -->
+            <div th:if="${param.success}">
+                <div class="alert alert-info">Money send !</div>
+            </div>
+
         </div>
     </div>
-</nav>
 
-<br>
-<br>
+    <div class="row mt-5">
+        <div class="col">
 
-<div class="container">
+            <h2 class="p-3"> My Transactions </h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">FistName</th>
+                    <th scope="col">LastName</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
 
-    <h1> Send Money </h1>
-    <form th:action="@{/tranfert}" method="post" th:object="${operation}">
+                <tr th:each="operation : ${operations}">
+                    <td th:if="${operation.accountTo.user.email == user}"
+                        th:text="${operation.accountFrom.user.firstName}"></td>
+                    <td th:unless="${operation.accountTo.user.email == user}"
+                        th:text="${operation.accountTo.user.firstName}"></td>
+                    <td th:if="${operation.accountTo.user.email == user}"
+                        th:text="${operation.accountFrom.user.lastName}"></td>
+                    <td th:unless="${operation.accountTo.user.email == user}"
+                        th:text="${operation.accountTo.user.lastName}"></td>
+                    <td th:if="${operation.accountTo.user.email == user}">Receveid</td>
+                    <td th:unless="${operation.accountTo.user.email == user}">Send</td>
+                    <td th:text="${operation.description}"></td>
+                    <td th:text="${operation.amount}"></td>
 
+                </tr>
 
-
-        <div class="form-group">
-            <label class="control-label" for="contact"> Email </label>
-            <select id="contact" class="form-select form-select-lg mb-3" aria-label=" My Contacts" >
-                <option selected>Select a contact</option>
-                <option th:each="contact : ${contacts}" value="${contact.email}" th:field="*{email}" th:text="${contact.email}"></option>
-            </select>
+                </tbody>
+            </table>
         </div>
-        <div class="form-group">
-            <label class="control-label" for="description"> Description </label> <input
-                id="description" class="form-control" th:field="*{description}"
-                required autofocus="autofocus" />
-        </div>
-
-        <div class="form-group">
-            <label class="control-label" for="amount"> Amount </label>
-            <input id="amount" class="form-control" type="number" th:field="*{amount}" required autofocus="autofocus" />
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-success">Pay</button>
-        </div>
-    </form>
-
-    <!-- success message -->
-    <div th:if="${param.success}">
-        <div class="alert alert-info">Money send !</div>
     </div>
-
 </div>
 </body>
 </html>

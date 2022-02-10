@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface OperationRepository extends JpaRepository<Operation,Long> {
-    @Query("SELECT o FROM Operation o WHERE o.accountFrom = :id AND o.accountTo = :id")
-    List<Operation> findOperationByUserId(Long id);
+    @Query("SELECT o FROM Operation o WHERE o.accountFrom.user.email = :email OR o.accountTo.user.email = :email")
+    List<Operation> findOperationByUser(String email);
+
 }

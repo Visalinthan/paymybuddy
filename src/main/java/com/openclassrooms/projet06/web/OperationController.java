@@ -1,6 +1,7 @@
 package com.openclassrooms.projet06.web;
 
 import com.openclassrooms.projet06.dto.SendMoneyDto;
+import com.openclassrooms.projet06.model.Operation;
 import com.openclassrooms.projet06.model.User;
 import com.openclassrooms.projet06.service.AuthenticationFacadeImpl;
 import com.openclassrooms.projet06.service.OperationService;
@@ -32,7 +33,10 @@ public class OperationController {
     @GetMapping
     public String transaction(Model model) {
         List<User> contacts = userService.getContacts(currentUserName());
+        List<Operation> operations = operationService.getOperationsDetails(currentUserName());
+        model.addAttribute("user",currentUserName());
         model.addAttribute("contacts", contacts);
+        model.addAttribute("operations", operations);
         return "transfert";
     }
 
