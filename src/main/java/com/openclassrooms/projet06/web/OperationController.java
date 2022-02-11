@@ -3,6 +3,7 @@ package com.openclassrooms.projet06.web;
 import com.openclassrooms.projet06.dto.SendMoneyDto;
 import com.openclassrooms.projet06.model.Operation;
 import com.openclassrooms.projet06.model.User;
+import com.openclassrooms.projet06.service.AccountService;
 import com.openclassrooms.projet06.service.AuthenticationFacadeImpl;
 import com.openclassrooms.projet06.service.OperationService;
 import com.openclassrooms.projet06.service.UserService;
@@ -20,14 +21,16 @@ public class OperationController {
 
     private OperationService operationService;
     private UserService userService;
+    private AccountService accountService;
 
     @Autowired
     private AuthenticationFacadeImpl authenticationFacade;
 
 
-    public OperationController(OperationService operationService, UserService userService) {
+    public OperationController(OperationService operationService, UserService userService, AccountService accountService) {
         this.operationService = operationService;
         this.userService = userService;
+        this.accountService = accountService;
     }
 
     @GetMapping
@@ -54,6 +57,13 @@ public class OperationController {
 
     @PostMapping
     public String sendMoneyContact(@ModelAttribute("operation") SendMoneyDto sendMoneyDto) {
+        if (sendMoneyDto.getAmount()<=0) {
+            return "redirect:/transfert?error";
+        }
+        if(!this.accountService.checkAccountBalance(currentUserName(),sendMoneyDto.getAmount())){
+            return "redirect:/transfert?balanceError";
+        }
+
         operationService.sendMoney(sendMoneyDto,currentUserName());
         return "redirect:/transfert?success";
     }

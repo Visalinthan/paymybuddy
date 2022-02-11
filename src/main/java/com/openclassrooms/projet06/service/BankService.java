@@ -33,4 +33,20 @@ public class BankService {
 
         return bankRepository.save(bank);
     }
+
+    public Bank setBalance(String email, double amount){
+        Bank bank = this.getBankUser(email);
+        double newBalance = bank.getSoldes() + amount;
+        bank.setSoldes(newBalance);
+        return this.bankRepository.save(bank);
+    }
+
+    public boolean checkBankBalance(String email, double amount){
+        Bank bank = this.getBankUser(email);
+        if(bank.getSoldes() >= amount){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

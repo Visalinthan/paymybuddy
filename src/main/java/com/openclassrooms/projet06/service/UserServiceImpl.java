@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getContacts(String email){
-      return  userRepository.findByEmail(email).map(u -> u.getContact()).orElse(Collections.emptyList());
+        return  userRepository.findByEmail(email).map(u -> u.getContact()).orElse(Collections.emptyList());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkIfContactExist(String userName, String email) {
-       return userRepository.findByEmail(userName).map(u -> u.getContact().stream().anyMatch(user -> user.getEmail().equals(email))).orElse(false);
+        return userRepository.findByEmail(userName).map(u -> u.getContact().stream().anyMatch(user -> user.getEmail().equals(email))).orElse(false);
 
     }
 

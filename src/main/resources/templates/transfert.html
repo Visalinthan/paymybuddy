@@ -52,6 +52,16 @@
                 <div class="alert alert-info">Money send !</div>
             </div>
 
+            <!-- error message -->
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">Invalid amount !</div>
+            </div>
+
+            <!-- error message -->
+            <div th:if="${param.balanceError}">
+                <div class="alert alert-danger">Account balance insufficient !</div>
+            </div>
+
         </div>
     </div>
 

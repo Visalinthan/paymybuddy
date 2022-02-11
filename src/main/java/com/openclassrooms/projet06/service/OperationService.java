@@ -3,40 +3,20 @@ package com.openclassrooms.projet06.service;
 import com.openclassrooms.projet06.dto.SendMoneyDto;
 import com.openclassrooms.projet06.model.Account;
 import com.openclassrooms.projet06.model.Operation;
-import com.openclassrooms.projet06.model.User;
 import com.openclassrooms.projet06.repository.OperationRepository;
-import com.openclassrooms.projet06.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OperationService {
 
     private AccountService accountService;
-    private UserRepository userRepository;
     private OperationRepository operationRepository;
 
-    @Autowired
-    private AuthenticationFacadeImpl authenticationFacade;
 
-    @RequestMapping(value = "/username", method = RequestMethod.GET)
-    @ResponseBody
-    public String currentUserName() {
-        Authentication authentication = authenticationFacade.getAuthentication();
-        return authentication.getName();
-    }
-
-    public OperationService(AccountService accountService, UserRepository userRepository, OperationRepository operationRepository) {
+    public OperationService(AccountService accountService,OperationRepository operationRepository) {
         this.accountService = accountService;
-        this.userRepository = userRepository;
         this.operationRepository = operationRepository;
     }
 

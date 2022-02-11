@@ -1,7 +1,6 @@
 package com.openclassrooms.projet06.web;
 
 import com.openclassrooms.projet06.dto.AddBankDto;
-import com.openclassrooms.projet06.dto.UserRegistrationDto;
 import com.openclassrooms.projet06.model.Bank;
 import com.openclassrooms.projet06.model.User;
 import com.openclassrooms.projet06.service.AuthenticationFacadeImpl;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller

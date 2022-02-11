@@ -20,7 +20,7 @@ public class AccountService {
     }
 
     public Account saveAccount(User user){
-        Account account =new Account();
+        Account account = new Account();
         account.setSoldes(0);
         account.setUser(user);
         return this.accountRepository.save(account);
@@ -38,6 +38,15 @@ public class AccountService {
         double newBalance = account.getSoldes() + amount;
         account.setSoldes(newBalance);
         return this.accountRepository.save(account);
+    }
+
+    public boolean checkAccountBalance(String email, double amount){
+        Account account = this.getAccount(email);
+        if(account.getSoldes() >= amount){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 

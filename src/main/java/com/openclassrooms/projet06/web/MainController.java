@@ -32,7 +32,7 @@ public class MainController {
         return "login";
     }
 
-    @ModelAttribute("account")
+    @ModelAttribute("soldes")
     public AddBalanceDto addBalanceDto() {
         return new AddBalanceDto();
     }
@@ -55,10 +55,27 @@ public class MainController {
 
     @PostMapping("/addMoney")
     public String addMoney(@ModelAttribute("soldes") AddBalanceDto addBalanceDto) {
-        if (addBalanceDto.getSoldes()<=0) {
-            return "redirect:/?error";
+        if (addBalanceDto.getAmount()<=0) {
+            return "redirect:/?errorAccount";
         }
-        this.accountService.setAmount(currentUserName(),addBalanceDto.getSoldes());
-        return "redirect:/?success";
+        if(!this.bankService.checkBankBalance(currentUserName(),addBalanceDto.getAmount())){
+            return "redirect:/?balanceErrorAccount";
+        }
+        this.accountService.setAmount(currentUserName(),addBalanceDto.getAmount());
+        this.bankService.setBalance(currentUserName(),-addBalanceDto.getAmount());
+        return "redirect:/?successAccount";
+    }
+
+    @PostMapping("/transfertMoney")
+    public String transfertMoney(@ModelAttribute("soldes") AddBalanceDto addBalanceDto) {
+        if (addBalanceDto.getAmount()<=0) {
+            return "redirect:/?errorBank";
+        }
+        if(!this.accountService.checkAccountBalance(currentUserName(),addBalanceDto.getAmount())){
+            return "redirect:/?balanceErrorBank";
+        }
+        this.accountService.setAmount(currentUserName(),-addBalanceDto.getAmount());
+        this.bankService.setBalance(currentUserName(),addBalanceDto.getAmount());
+        return "redirect:/?successBank";
     }
 }

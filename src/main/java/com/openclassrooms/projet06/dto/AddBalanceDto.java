@@ -2,16 +2,16 @@ package com.openclassrooms.projet06.dto;
 
 public class AddBalanceDto {
 
-    private double soldes;
+    private double amount;
 
     public AddBalanceDto() {
     }
 
-    public double getSoldes() {
-        return soldes;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setSoldes(double soldes) {
-        this.soldes = soldes;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }

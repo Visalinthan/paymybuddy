@@ -26,11 +26,11 @@
             <h3 class="p-3">Solde actuel :  <span th:text="${account.soldes}"></span> €</h3>
 
 
-            <form class="row g-3 p-3" th:action="@{/addMoney}" method="post" th:object="${account}">
+            <form class="row g-3 p-3" th:action="@{/addMoney}" method="post" th:object="${soldes}">
 
                 <div class="col-auto">
                     <label class="visually-hidden"  for="soldes"> Amount </label>
-                    <input id="soldes" class="form-control" type="number" th:field="*{soldes}" required
+                    <input id="soldes" class="form-control" type="number" th:field="*{amount}" required
                            autofocus="autofocus"/>
                 </div>
                 <div class="col-auto">
@@ -39,14 +39,47 @@
             </form>
 
             <!-- success message -->
-            <div th:if="${param.success}">
+            <div th:if="${param.successAccount}">
                 <div class="alert alert-info">Balance added !</div>
             </div>
 
             <!-- error message -->
-            <div th:if="${param.error}">
+            <div th:if="${param.errorAccount}">
                 <div class="alert alert-danger">Invalid amount !</div>
             </div>
+
+            <!-- error message -->
+            <div th:if="${param.balanceErrorAccount}">
+                <div class="alert alert-danger">Bank balance insufficient !</div>
+            </div>
+
+            <form class="row g-3 p-3" th:action="@{/transfertMoney}" method="post" th:object="${soldes}">
+
+                <div class="col-auto">
+                    <label class="visually-hidden"  for="balance"> Amount </label>
+                    <input id="balance" class="form-control" type="number" th:field="*{amount}" required
+                           autofocus="autofocus"/>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success mb-3">Transfer in Bank</button>
+                </div>
+            </form>
+
+            <!-- success message -->
+            <div th:if="${param.successBank}">
+                <div class="alert alert-info">Amount added in bank !</div>
+            </div>
+
+            <!-- error message -->
+            <div th:if="${param.errorBank}">
+                <div class="alert alert-danger">Invalid amount !</div>
+            </div>
+
+            <!-- error message -->
+            <div th:if="${param.balanceErrorBank}">
+                <div class="alert alert-danger">Account balance insufficient !</div>
+            </div>
+
 
         </div>
     </div>
