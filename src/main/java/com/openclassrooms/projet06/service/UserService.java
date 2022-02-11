@@ -11,13 +11,18 @@ import java.util.Optional;
 
 @Service
 public interface UserService extends UserDetailsService {
-    User save(UserRegistrationDto registrationDto);
+
+    User saveAdmin(User user);
+
+    User saveUser(UserRegistrationDto registrationDto);
 
     User addContact(String userConnected, String Contact);
 
     Optional<User> getUser(String email);
 
     List<User> getContacts(String email);
+
+    List<User> getAllUsers();
 
     boolean checkIfUserExist(String email);
 
