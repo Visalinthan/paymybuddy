@@ -62,6 +62,11 @@ public class UserServiceImpl implements UserService {
         return user.map(userRepository::save).orElse(null);
     }
 
+
+    public Optional<User> getUser(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     @Override
     public List<User> getContacts(String email){
       return  userRepository.findByEmail(email).map(u -> u.getContact()).orElse(Collections.emptyList());

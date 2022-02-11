@@ -17,7 +17,10 @@
 <div class="container">
 
     <div class="row mt-5 justify-content-md-center">
-        <div class="col-md-auto">
+        <div th:if="${bank == null}"  class="col-md-auto">
+            <div class="alert alert-danger">Added a bank account in your profile !</div>
+        </div>
+        <div th:unless="${bank == null}"  class="col-md-auto">
             <h2 class="p-3"> Mon compte </h2>
 
             <h3 class="p-3">Solde actuel :  <span th:text="${account.soldes}"></span> €</h3>

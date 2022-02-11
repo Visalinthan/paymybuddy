@@ -2,8 +2,11 @@ package com.openclassrooms.projet06.web;
 
 import com.openclassrooms.projet06.dto.AddBalanceDto;
 import com.openclassrooms.projet06.model.Account;
+import com.openclassrooms.projet06.model.Bank;
 import com.openclassrooms.projet06.service.AccountService;
 import com.openclassrooms.projet06.service.AuthenticationFacadeImpl;
+import com.openclassrooms.projet06.service.BankService;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,12 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class MainController {
 
     private AccountService accountService;
+    private BankService bankService;
 
     @Autowired
     private AuthenticationFacadeImpl authenticationFacade;
 
-    public MainController(AccountService accountService) {
+    public MainController(AccountService accountService, BankService bankService) {
         this.accountService = accountService;
+        this.bankService = bankService;
     }
 
     @GetMapping("/login")
@@ -42,7 +47,9 @@ public class MainController {
     @GetMapping("/")
     public String home(Model model) {
         Account account = accountService.getAccount(currentUserName());
+        Bank bank = bankService.getBankUser(currentUserName());
         model.addAttribute("account", account);
+        model.addAttribute("bank", bank);
         return "index";
     }
 
