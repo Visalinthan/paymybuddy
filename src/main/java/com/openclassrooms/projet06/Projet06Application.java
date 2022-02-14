@@ -2,17 +2,18 @@ package com.openclassrooms.projet06;
 
 import com.openclassrooms.projet06.model.Role;
 import com.openclassrooms.projet06.model.User;
+import com.openclassrooms.projet06.service.AccountService;
 import com.openclassrooms.projet06.service.RoleService;
 import com.openclassrooms.projet06.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class Projet06Application {
@@ -23,33 +24,33 @@ public class Projet06Application {
 
 	@Bean
 	@Transactional
-	CommandLineRunner runner(UserService userService, RoleService roleService){
+	CommandLineRunner runner(UserService userService, RoleService roleService, AccountService accountService){
 		return args -> {
-			/*
-			Collection<Role> roles = new ArrayList<>();
-			Role roleAdmin = new Role();
-			roleAdmin.setName("ADMIN");
 
-			Role roleUser = new Role();
-			roleUser.setName("USER");
+			List<Boolean> users = userService.getAllUsers().stream().map(user -> user.getRole().getName().equals("ROLE_ADMIN")).collect(Collectors.toList());
 
-			roles.add(roleAdmin);
+				if(users.isEmpty()) {
+					Role roleAdmin = new Role();
+					roleAdmin.setName("ROLE_ADMIN");
 
-			roleService.saveRole(roleAdmin);
-			roleService.saveRole(roleUser);
+					Role roleUser = new Role();
+					roleUser.setName("ROLE_USER");
 
-			User user = new User();
+					roleService.saveRole(roleAdmin);
+					roleService.saveRole(roleUser);
 
-			List<User> users = userService.getAllUsers();
-			user.setFirstName("Manu");
-			user.setFirstName("Phillipe");
-			user.setEmail("manu@live.fr");
-			user.setPassword("123456");
-			user.setContact(users);
-			user.setRoles(roles);
+					User user = new User();
 
-			userService.saveAdmin(user);
-			*/
+					user.setFirstName("Sandhiran");
+					user.setLastName("Vishal");
+					user.setEmail("vishal@live.fr");
+					user.setPassword(new BCryptPasswordEncoder().encode("123456"));
+					user.setContact(null);
+					user.setRole(roleAdmin);
+
+					userService.saveAdmin(user);
+					accountService.saveAccount(user);
+				}
 
 		};
 

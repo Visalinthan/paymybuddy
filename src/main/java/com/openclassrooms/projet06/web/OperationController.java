@@ -1,6 +1,7 @@
 package com.openclassrooms.projet06.web;
 
 import com.openclassrooms.projet06.dto.SendMoneyDto;
+import com.openclassrooms.projet06.model.Account;
 import com.openclassrooms.projet06.model.Operation;
 import com.openclassrooms.projet06.model.User;
 import com.openclassrooms.projet06.service.AccountService;
@@ -57,13 +58,19 @@ public class OperationController {
 
     @PostMapping
     public String sendMoneyContact(@ModelAttribute("operation") SendMoneyDto sendMoneyDto) {
+        User userAdmin = this.userService.getUserByRole("ROLE_ADMIN");
+        double amountTotal = sendMoneyDto.getAmount()+(sendMoneyDto.getAmount()*0.005);
+
         if (sendMoneyDto.getAmount()<=0) {
             return "redirect:/transfert?error";
         }
-        if(!this.accountService.checkAccountBalance(currentUserName(),sendMoneyDto.getAmount())){
+        if(!this.accountService.checkAccountBalance(currentUserName(),amountTotal)){
             return "redirect:/transfert?balanceError";
         }
-
+        operationService.sendMoney(sendMoneyDto,currentUserName());
+        sendMoneyDto.setEmail(userAdmin.getEmail());
+        sendMoneyDto.setAmount(sendMoneyDto.getAmount()*0.005);
+        sendMoneyDto.setDescription("frais de transaction" );
         operationService.sendMoney(sendMoneyDto,currentUserName());
         return "redirect:/transfert?success";
     }

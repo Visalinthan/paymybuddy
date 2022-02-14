@@ -4,6 +4,7 @@ import com.openclassrooms.projet06.dto.SendMoneyDto;
 import com.openclassrooms.projet06.model.Account;
 import com.openclassrooms.projet06.model.Operation;
 import com.openclassrooms.projet06.repository.OperationRepository;
+import com.openclassrooms.projet06.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,11 @@ public class OperationService {
     private OperationRepository operationRepository;
 
 
-    public OperationService(AccountService accountService,OperationRepository operationRepository) {
+    public OperationService(AccountService accountService, OperationRepository operationRepository) {
         this.accountService = accountService;
         this.operationRepository = operationRepository;
     }
+
 
     public Operation sendMoney(SendMoneyDto sendMoneyDto, String email){
         Operation operation = new Operation();

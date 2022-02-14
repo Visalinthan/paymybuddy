@@ -27,4 +27,6 @@ public interface UserService extends UserDetailsService {
     boolean checkIfUserExist(String email);
 
     boolean checkIfContactExist(String userName, String email);
+
+    User getUserByRole(String role);
 }

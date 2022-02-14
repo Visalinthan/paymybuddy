@@ -21,10 +21,12 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private AccountService accountService;
+    private RoleService roleService;
 
-    public UserServiceImpl(UserRepository userRepository, AccountService accountService) {
+    public UserServiceImpl(UserRepository userRepository, AccountService accountService, RoleService roleService) {
         this.userRepository = userRepository;
         this.accountService = accountService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -34,9 +36,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(UserRegistrationDto registrationDto) {
+        Role roleUser = this.roleService.getRolebyName("ROLE_USER");
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
-                new BCryptPasswordEncoder().encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+                new BCryptPasswordEncoder().encode(registrationDto.getPassword()), roleUser);
         this.accountService.saveAccount(user);
 
         return userRepository.save(user);
@@ -50,11 +53,13 @@ public class UserServiceImpl implements UserService {
         }
 
         return new org.springframework.security.core.userdetails.User(user
-                .get().getEmail(), user.get().getPassword(), mapRolesToAuthorities(user.get().getRoles()));
+                .get().getEmail(), user.get().getPassword(), mapRolesToAuthorities(user.get().getRole()));
     }
 
-    private Collection <? extends GrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection <? extends GrantedAuthority> mapRolesToAuthorities(Role role) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.getName()));
+        return authorities;
     }
 
     @Override
@@ -91,6 +96,11 @@ public class UserServiceImpl implements UserService {
     public boolean checkIfContactExist(String userName, String email) {
         return userRepository.findByEmail(userName).map(u -> u.getContact().stream().anyMatch(user -> user.getEmail().equals(email))).orElse(false);
 
+    }
+
+    @Override
+    public User getUserByRole(String role) {
+        return this.userRepository.findUserByRole(role);
     }
 
 

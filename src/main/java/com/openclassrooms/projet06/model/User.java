@@ -1,8 +1,6 @@
 package com.openclassrooms.projet06.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -40,27 +38,21 @@ public class User {
     )
     private List<User> contact;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-
-    private Collection < Role > roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public User() {
 
     }
 
-    public User(String firstName, String lastName, String email, String password, Collection < Role > roles) {
+    public User(String firstName, String lastName, String email, String password, Role role) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
     }
     public Long getId() {
         return id;
@@ -92,12 +84,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-    public void setRoles(Collection < Role > roles) {
-        this.roles = roles;
-    }
+
 
     public List<User> getUsers() {
         return user;
@@ -114,14 +101,9 @@ public class User {
     public void addContacts(User user) {
         this.contact.add(user);
     }
-/*
-    public List<Account> getAccounts() {
-        return accounts;
+    public void setContact(List<User> contact) {
+        this.contact = contact;
     }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }*/
 
     public List<User> getUser() {
         return user;
@@ -131,7 +113,11 @@ public class User {
         this.user = user;
     }
 
-    public void setContact(List<User> contact) {
-        this.contact = contact;
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
