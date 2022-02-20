@@ -6,9 +6,11 @@ import com.openclassrooms.projet06.repository.AccountRepository;
 import com.openclassrooms.projet06.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AccountService {
 
     private AccountRepository accountRepository;

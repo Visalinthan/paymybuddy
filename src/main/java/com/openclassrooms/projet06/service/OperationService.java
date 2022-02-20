@@ -7,9 +7,11 @@ import com.openclassrooms.projet06.repository.OperationRepository;
 import com.openclassrooms.projet06.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class OperationService {
 
     private AccountService accountService;

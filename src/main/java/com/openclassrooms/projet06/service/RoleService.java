@@ -4,7 +4,10 @@ import com.openclassrooms.projet06.model.Role;
 import com.openclassrooms.projet06.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class RoleService {
 
     private RoleRepository roleRepository;

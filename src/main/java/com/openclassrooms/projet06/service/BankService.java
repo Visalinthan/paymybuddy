@@ -6,8 +6,11 @@ import com.openclassrooms.projet06.model.Bank;
 import com.openclassrooms.projet06.repository.BankRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 
 @Service
+@Transactional
 public class BankService {
 
     private BankRepository bankRepository;
