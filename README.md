@@ -18,7 +18,7 @@
  - Tapez la commande "mvn spring-boot:run" pour éxécuter le projet
  
  Execution d'appli 
- Ouvrez votre navigateur et allez sur le lien http://localhost:8080/
+ - Ouvrez votre navigateur et allez sur le lien http://localhost:8080/
  
 
 ![mpd](https://user-images.githubusercontent.com/11884430/154940780-affb9260-119c-44f5-b4cd-fbf019e2f802.PNG)
